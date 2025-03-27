@@ -25,8 +25,13 @@ try
 
     var selectedImage = imageAnalyzer.FileList[imageIndex];
     var image = new Bitmap(selectedImage.FullName);
+    var extimatedBrightness = imageAnalyzer.CalculateImageBrightness(image);
 
-    Console.WriteLine($"\n{imageAnalyzer.CalculateImageBrightness(image)}");
+    Console.WriteLine($"\n{extimatedBrightness}");
+
+    var processedImage = new ProcessedImage(selectedImage.Name, selectedImage.Length, extimatedBrightness, DateTimeOffset.Now);
+    FileService.WriteToCsv(processedImage);
+
     FileService.SearchFromCsv(100);
 }
 catch (Exception ex)
