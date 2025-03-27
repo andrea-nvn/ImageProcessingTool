@@ -37,12 +37,19 @@ try
     var bitmap = new Bitmap(selectedImage.FullName);
     var extimatedBrightness = imageAnalyzer.CalculateImageBrightness(bitmap);
 
-    Console.WriteLine($"\n{extimatedBrightness}");
+    Console.WriteLine($"\nLuminosità stimata: {extimatedBrightness}");
 
     var processedImage = new ProcessedImage(selectedImage.Name, selectedImage.Length, extimatedBrightness, DateTimeOffset.Now);
     FileService.WriteToCsv(processedImage);
 
-    FileService.SearchFromCsv(100);
+    Console.WriteLine($"\nInserire valore minimo di luminosità per la ricerca:");
+    if (!double.TryParse(Console.ReadLine(), out double threshold))
+    {
+        Console.WriteLine("\nValore non valido!");
+        return;
+    }
+
+    FileService.SearchFromCsv(threshold);
 }
 catch (Exception ex)
 {
