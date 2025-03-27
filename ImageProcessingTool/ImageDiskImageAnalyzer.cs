@@ -1,17 +1,23 @@
-﻿using ImageProcessingTool.VisionSystem;
+﻿using ImageProcessingTool.ImageAnalyzers;
+using ImageProcessingTool.VisionSystem;
 using System.Drawing;
 using System.Text;
 
-namespace ImageProcessingTool.ImageAnalyzer;
+namespace ImageProcessingTool;
 
-public class ImageAnalyzer
+public sealed class ImageDiskImageAnalyzer : ImageAnalyzer
 {
     private List<FileInfo> _fileList;
 
 
-    public ImageAnalyzer()
+    public ImageDiskImageAnalyzer()
     {
         _fileList = [];
+    }
+
+    public override IVisionSystem CreateVisionSystem()
+    {
+        return new ImageDiskVisionSystem();
     }
 
 

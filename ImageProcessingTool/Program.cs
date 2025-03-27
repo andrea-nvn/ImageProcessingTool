@@ -1,11 +1,10 @@
 ﻿using ImageProcessingTool;
-using ImageProcessingTool.ImageAnalyzer;
 
 
 try
 {
-    var visionSystem = new ImageDiskVisionSystem();
-    var imageAnalyzer = new ImageAnalyzer();
+    var imageAnalyzer = new ImageDiskImageAnalyzer();
+    var visionSystem = imageAnalyzer.CreateVisionSystem();
 
     imageAnalyzer.AcquireImages(visionSystem);
 
