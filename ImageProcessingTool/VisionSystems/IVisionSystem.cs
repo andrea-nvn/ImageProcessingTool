@@ -1,4 +1,4 @@
-﻿namespace ImageProcessingTool.VisionSystem;
+﻿namespace ImageProcessingTool.VisionSystems;
 
 public interface IVisionSystem
 {
