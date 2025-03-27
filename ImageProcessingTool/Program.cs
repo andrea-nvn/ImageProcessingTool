@@ -1,5 +1,6 @@
 ﻿using ImageProcessingTool;
 using System.Drawing;
+using System.Text;
 
 
 try
@@ -7,9 +8,17 @@ try
     var imageAnalyzer = new ImageDiskImageAnalyzer();
     var visionSystem = imageAnalyzer.CreateVisionSystem();
 
-    imageAnalyzer.AcquireImages(visionSystem);
+    var images = visionSystem.AcquireImages();
 
-    Console.WriteLine($"\n{imageAnalyzer.ListLoadedImages()}");
+    var sb = new StringBuilder();
+
+    for (int i = 0; i < images.Count; i++)
+    {
+        var image = images[i];
+        sb.AppendLine($"[{i}] {image.Name} - {image.Length} byte - {image.CreationTimeUtc}");
+    }
+
+    Console.WriteLine($"\n{sb}");
     Console.WriteLine("Seleziona l'immagine da analizzare: ");
 
     if (!int.TryParse(Console.ReadLine(), out int imageIndex))
@@ -18,15 +27,15 @@ try
         return;
     }
 
-    if (imageIndex > imageAnalyzer.FileList.Count)
+    if (imageIndex > images.Count)
     {
-        Console.WriteLine($"L'indice scelto deve essere minore di {imageAnalyzer.FileList.Count}");
+        Console.WriteLine($"L'indice scelto deve essere minore di {images.Count}");
         return;
     }
 
-    var selectedImage = imageAnalyzer.FileList[imageIndex];
-    var image = new Bitmap(selectedImage.FullName);
-    var extimatedBrightness = imageAnalyzer.CalculateImageBrightness(image);
+    var selectedImage = images[imageIndex];
+    var bitmap = new Bitmap(selectedImage.FullName);
+    var extimatedBrightness = imageAnalyzer.CalculateImageBrightness(bitmap);
 
     Console.WriteLine($"\n{extimatedBrightness}");
 

@@ -7,38 +7,9 @@ namespace ImageProcessingTool;
 
 public sealed class ImageDiskImageAnalyzer : ImageAnalyzer
 {
-    public ImageDiskImageAnalyzer()
-    {
-        FileList = [];
-    }
-
-
-    public List<FileInfo> FileList { get; private set; }
-
-
     public override IVisionSystem CreateVisionSystem()
     {
         return new ImageDiskVisionSystem();
-    }
-
-    public void AcquireImages(
-        IVisionSystem visionSystem)
-    {
-        FileList = visionSystem.AcquireImages();
-    }
-
-    public string ListLoadedImages()
-    {
-        var sb = new StringBuilder();
-
-        for (int i = 0; i < FileList.Count; i++)
-        {
-            var file = FileList[i];
-
-            sb.AppendLine($"[{i}] {file.Name} - {file.Length} byte - {file.CreationTimeUtc}");
-        }
-
-        return sb.ToString();
     }
 
     public override double CalculateImageBrightness(
