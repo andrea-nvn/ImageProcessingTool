@@ -14,6 +14,13 @@ public sealed class ImageDiskSystem : IVisionSystem
             throw new Exception("La directory selezionata non esiste.");
         }
 
+        return LoadImagesFromDirectory(path);
+    }
+
+
+    private static List<FileInfo> LoadImagesFromDirectory(
+        string path)
+    {
         var pngImages = Directory.GetFiles(path, "*.png");
         var jpgImages = Directory.GetFiles(path, "*.jpg");
         var images = pngImages.Concat(jpgImages);
