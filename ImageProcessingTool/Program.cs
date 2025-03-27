@@ -3,7 +3,7 @@
 
 try
 {
-    var visionSystem = new ImageDiskSystem();
+    var visionSystem = new ImageDiskVisionSystem();
     var imageAnalyzer = new ImageAnalyzer();
 
     imageAnalyzer.AcquireImages(visionSystem);

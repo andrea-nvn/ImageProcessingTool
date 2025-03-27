@@ -2,7 +2,7 @@
 
 namespace ImageProcessingTool;
 
-public sealed class ImageDiskSystem : IVisionSystem
+public sealed class ImageDiskVisionSystem : IVisionSystem
 {
     public List<FileInfo> AcquireImages()
     {
