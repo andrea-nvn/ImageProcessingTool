@@ -20,7 +20,8 @@ try
 
     if (imageIndex > imageAnalyzer.FileList.Count)
     {
-        throw new Exception($"L'indice scelto deve essere minore di {imageAnalyzer.FileList.Count}");
+        Console.WriteLine($"L'indice scelto deve essere minore di {imageAnalyzer.FileList.Count}");
+        return;
     }
 
     var selectedImage = imageAnalyzer.FileList[imageIndex];
