@@ -7,33 +7,33 @@ namespace ImageProcessingTool;
 
 public sealed class ImageDiskImageAnalyzer : ImageAnalyzer
 {
-    private List<FileInfo> _fileList;
-
-
     public ImageDiskImageAnalyzer()
     {
-        _fileList = [];
+        FileList = [];
     }
+
+
+    public List<FileInfo> FileList { get; private set; }
+
 
     public override IVisionSystem CreateVisionSystem()
     {
         return new ImageDiskVisionSystem();
     }
 
-
     public void AcquireImages(
         IVisionSystem visionSystem)
     {
-        _fileList = visionSystem.AcquireImages();
+        FileList = visionSystem.AcquireImages();
     }
 
     public string ListLoadedImages()
     {
         var sb = new StringBuilder();
 
-        for (int i = 0; i < _fileList.Count; i++)
+        for (int i = 0; i < FileList.Count; i++)
         {
-            var file = _fileList[i];
+            var file = FileList[i];
 
             sb.AppendLine($"[{i}] {file.Name} - {file.Length} byte - {file.CreationTimeUtc}");
         }
@@ -41,20 +41,17 @@ public sealed class ImageDiskImageAnalyzer : ImageAnalyzer
         return sb.ToString();
     }
 
-    public double CalculateImageBrightness(
-        int imageIndex)
+    public override double CalculateImageBrightness(
+        Bitmap image)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(imageIndex, _fileList.Count);
-        var img = new Bitmap(_fileList[imageIndex].FullName);
-
         long totalBytes = 0;
         long pixelCount = 0;
 
-        for (int y = 0; y < img.Height; y++)
+        for (int y = 0; y < image.Height; y++)
         {
-            for (int x = 0; x < img.Width; x++)
+            for (int x = 0; x < image.Width; x++)
             {
-                var pixelColor = img.GetPixel(x, y);
+                var pixelColor = image.GetPixel(x, y);
 
                 totalBytes += pixelColor.R + pixelColor.G + pixelColor.B;
                 pixelCount++;
@@ -62,9 +59,6 @@ public sealed class ImageDiskImageAnalyzer : ImageAnalyzer
         }
 
         var extimatedBrightness = (double)totalBytes / pixelCount;
-
-        var processedImage = new ProcessedImage(_fileList[imageIndex].Name, _fileList[imageIndex].Length, extimatedBrightness, DateTimeOffset.Now);
-        FileService.WriteToCsv(processedImage);
 
         return extimatedBrightness;
     }

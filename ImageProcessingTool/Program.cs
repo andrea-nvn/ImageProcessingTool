@@ -1,4 +1,5 @@
 ﻿using ImageProcessingTool;
+using System.Drawing;
 
 
 try
@@ -17,7 +18,15 @@ try
         return;
     }
 
-    Console.WriteLine($"\n{imageAnalyzer.CalculateImageBrightness(imageIndex)}");
+    if (imageIndex > imageAnalyzer.FileList.Count)
+    {
+        throw new Exception($"L'indice scelto deve essere minore di {imageAnalyzer.FileList.Count}");
+    }
+
+    var selectedImage = imageAnalyzer.FileList[imageIndex];
+    var image = new Bitmap(selectedImage.FullName);
+
+    Console.WriteLine($"\n{imageAnalyzer.CalculateImageBrightness(image)}");
     FileService.SearchFromCsv(100);
 }
 catch (Exception ex)
