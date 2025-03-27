@@ -1,6 +1,6 @@
 ﻿namespace ImageProcessingTool;
 
-public sealed class FileService
+public static class FileService
 {
     private const string Path = "./results";
     private const string FileName = "AnalysisResults.csv";
