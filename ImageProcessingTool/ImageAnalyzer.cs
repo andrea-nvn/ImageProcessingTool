@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using ImageProcessingTool.VisionSystem;
+using System.Drawing;
 using System.Text;
 
 namespace ImageProcessingTool;
@@ -14,10 +15,10 @@ public sealed class ImageAnalyzer
     }
 
 
-    public void LoadImages(
-        string? path)
+    public void AcquireImages(
+        IVisionSystem visionSystem)
     {
-        _fileList = FileService.LoadFileInfo(path, "*.jpg");
+        _fileList = visionSystem.AcquireImages();
     }
 
     public string ListLoadedImages()
