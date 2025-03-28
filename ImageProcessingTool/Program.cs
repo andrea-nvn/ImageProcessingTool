@@ -19,9 +19,10 @@ try
     var analysisResults = AnalyzeSelectedImage(imageAnalyzer, images[imageIndex]);
     Console.WriteLine($"\nLuminosità stimata: {analysisResults.LuminositàStimata}");
 
-    FileService.WriteToCsv(analysisResults);
+    var analysisCsvFileHandler = new AnalysisCsvFileHandler();
+    analysisCsvFileHandler.SaveAnalysis(analysisResults);
 
-    SearchAnalisysResultsByBrightnessThreshold();
+    SearchAnalisysResultsByBrightnessThreshold(analysisCsvFileHandler);
 }
 catch (Exception ex)
 {
@@ -86,7 +87,8 @@ static ImageAnalysisResults AnalyzeSelectedImage(
     return new ImageAnalysisResults(image.Name, image.Length, extimatedBrightness, DateTimeOffset.Now);
 }
 
-static void SearchAnalisysResultsByBrightnessThreshold()
+static void SearchAnalisysResultsByBrightnessThreshold(
+    IAnalysisFileHandler analysisFileHandler)
 {
     Console.WriteLine($"\nInserire valore minimo di luminosità per la ricerca:");
 
@@ -95,5 +97,5 @@ static void SearchAnalisysResultsByBrightnessThreshold()
         throw new Exception("Valore non valido!");
     }
 
-    FileService.SearchFromCsv(threshold);
+    analysisFileHandler.SearchByBrightnessThreshold(threshold);
 }

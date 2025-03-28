@@ -1,4 +1,4 @@
-﻿namespace ImageProcessingTool.AnalysisResults;
+﻿namespace ImageUtilities;
 
 public sealed record ImageAnalysisResults(
     string NomeFile,

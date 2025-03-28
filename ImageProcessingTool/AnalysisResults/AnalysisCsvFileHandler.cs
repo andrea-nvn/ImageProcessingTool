@@ -1,13 +1,15 @@
-﻿namespace ImageProcessingTool.AnalysisResults;
+﻿using ImageUtilities;
 
-public static class FileService
+namespace ImageProcessingTool.AnalysisResults;
+
+public class AnalysisCsvFileHandler : IAnalysisFileHandler
 {
     private const string Path = "./results";
     private const string FileName = "AnalysisResults.csv";
     private const string FilePath = $"{Path}/{FileName}";
 
 
-    public static void WriteToCsv(
+    public void SaveAnalysis(
         ImageAnalysisResults processedImage)
     {
         if (!Directory.Exists(Path))
@@ -24,7 +26,7 @@ public static class FileService
         writer.WriteLine($"{processedImage.NomeFile},{processedImage.Dimensione},{processedImage.LuminositàStimata},{processedImage.DataAnalisi}");
     }
 
-    public static void SearchFromCsv(
+    public void SearchByBrightnessThreshold(
         double threshold)
     {
         if (!File.Exists(FilePath))
