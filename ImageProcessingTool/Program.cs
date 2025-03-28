@@ -39,15 +39,16 @@ static (ImageAnalyzer, IAnalysisFileHandler) CreateImageAnalyzerFromSettings()
     var visionSistemType = root.GetProperty("VisionSistemType").GetString();
     var analysisPersistanceSupport = root.GetProperty("AnalysisPersistanceSupport").GetString();
 
-    var imageAnalyzer = visionSistemType switch
+    ImageAnalyzer imageAnalyzer = visionSistemType switch
     {
         nameof(ImageDiskImageAnalyzer) => new ImageDiskImageAnalyzer(),
         _ => throw new NotSupportedException("Dispositivo di visione non supportato!")
     };
 
-    var analysisFileHandler = analysisPersistanceSupport switch
+    IAnalysisFileHandler analysisFileHandler = analysisPersistanceSupport switch
     {
         "csv" => new AnalysisCsvFileHandler(),
+        "txt" => new AnalysisTxtFileHandler(),
         _ => throw new NotSupportedException("Supporto di salvataggio non supportato!")
     };
 
