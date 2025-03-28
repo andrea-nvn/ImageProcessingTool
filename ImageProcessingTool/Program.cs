@@ -8,7 +8,7 @@ using System.Text.Json;
 
 try
 {
-    var imageAnalyzer = CreateImageAnalyzerFromSettings();
+    (var imageAnalyzer, var analysisFileHandler) = CreateImageAnalyzerFromSettings();
     var visionSystem = imageAnalyzer.CreateVisionSystem();
 
     var images = visionSystem.AcquireImages();
@@ -19,10 +19,9 @@ try
     var analysisResults = AnalyzeSelectedImage(imageAnalyzer, images[imageIndex]);
     Console.WriteLine($"\nLuminosità stimata: {analysisResults.LuminositàStimata}");
 
-    var analysisCsvFileHandler = new AnalysisCsvFileHandler();
-    analysisCsvFileHandler.SaveAnalysis(analysisResults);
+    analysisFileHandler.SaveAnalysis(analysisResults);
 
-    SearchAnalisysResultsByBrightnessThreshold(analysisCsvFileHandler);
+    SearchAnalisysResultsByBrightnessThreshold(analysisFileHandler);
 }
 catch (Exception ex)
 {
@@ -30,19 +29,28 @@ catch (Exception ex)
 }
 
 
-static ImageAnalyzer CreateImageAnalyzerFromSettings()
+static (ImageAnalyzer, IAnalysisFileHandler) CreateImageAnalyzerFromSettings()
 {
     var appsettings = File.ReadAllText("appsettings.json");
 
     var doc = JsonDocument.Parse(appsettings);
     var root = doc.RootElement;
     var visionSistemType = root.GetProperty("VisionSistemType").GetString();
+    var analysisPersistanceSupport = root.GetProperty("AnalysisPersistanceSupport").GetString();
 
-    return visionSistemType switch
+    var imageAnalyzer = visionSistemType switch
     {
         nameof(ImageDiskImageAnalyzer) => new ImageDiskImageAnalyzer(),
         _ => throw new NotSupportedException("Dispositivo di visione non supportato!")
     };
+
+    var analysisFileHandler = analysisPersistanceSupport switch
+    {
+        "csv" => new AnalysisCsvFileHandler(),
+        _ => throw new NotSupportedException("Supporto di salvataggio non supportato!")
+    };
+
+    return (imageAnalyzer, analysisFileHandler);
 }
 
 static void ShowAcquiredImages(
