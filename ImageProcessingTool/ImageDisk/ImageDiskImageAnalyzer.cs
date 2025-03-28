@@ -1,8 +1,7 @@
-﻿using ImageProcessingTool.ImageAnalyzers;
-using ImageProcessingTool.VisionSystems;
+﻿using ImageUtilities;
 using System.Drawing;
 
-namespace ImageProcessingTool;
+namespace ImageProcessingTool.ImageDisk;
 
 public sealed class ImageDiskImageAnalyzer : ImageAnalyzer
 {

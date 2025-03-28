@@ -1,6 +1,6 @@
-﻿using ImageProcessingTool.VisionSystems;
+﻿using ImageUtilities;
 
-namespace ImageProcessingTool;
+namespace ImageProcessingTool.ImageDisk;
 
 public sealed class ImageDiskVisionSystem : IVisionSystem
 {

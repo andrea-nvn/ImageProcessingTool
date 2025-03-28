@@ -1,7 +1,6 @@
-﻿using ImageProcessingTool.VisionSystems;
-using System.Drawing;
+﻿using System.Drawing;
 
-namespace ImageProcessingTool.ImageAnalyzers;
+namespace ImageUtilities;
 
 public abstract class ImageAnalyzer
 {
