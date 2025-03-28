@@ -1,4 +1,5 @@
 ﻿using ImageUtilities;
+using ImageUtilities.Interfaces;
 
 namespace ImageProcessingTool.AnalysisResults;
 

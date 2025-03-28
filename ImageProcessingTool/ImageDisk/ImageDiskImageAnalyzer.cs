@@ -1,4 +1,5 @@
 ﻿using ImageUtilities;
+using ImageUtilities.Interfaces;
 using System.Drawing;
 
 namespace ImageProcessingTool.ImageDisk;

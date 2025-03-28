@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using ImageUtilities.Interfaces;
+using System.Drawing;
 
 namespace ImageUtilities;
 

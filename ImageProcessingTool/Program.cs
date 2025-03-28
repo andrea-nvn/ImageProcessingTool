@@ -1,6 +1,7 @@
 ﻿using ImageProcessingTool.AnalysisResults;
 using ImageProcessingTool.ImageDisk;
 using ImageUtilities;
+using ImageUtilities.Interfaces;
 using System.Drawing;
 using System.Text;
 using System.Text.Json;

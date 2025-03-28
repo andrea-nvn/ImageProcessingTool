@@ -1,4 +1,4 @@
-﻿using ImageUtilities;
+﻿using ImageUtilities.Interfaces;
 
 namespace ImageProcessingTool.ImageDisk;
 

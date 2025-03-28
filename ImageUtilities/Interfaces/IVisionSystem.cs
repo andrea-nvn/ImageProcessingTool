@@ -1,4 +1,4 @@
-﻿namespace ImageUtilities;
+﻿namespace ImageUtilities.Interfaces;
 
 public interface IVisionSystem
 {
