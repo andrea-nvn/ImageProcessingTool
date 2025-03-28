@@ -32,6 +32,11 @@ catch (Exception ex)
 
 static (ImageAnalyzer, IAnalysisFileHandler) CreateImageAnalyzerFromSettings()
 {
+    if (!File.Exists("appsettings.json"))
+    {
+        File.WriteAllText("appsettings.json", "{\r\n  \"VisionSistemType\": \"ImageDiskImageAnalyzer\",\r\n  \"AnalysisPersistanceSupport\":  \"csv\"\r\n}");
+    }
+
     var appsettings = File.ReadAllText("appsettings.json");
 
     var doc = JsonDocument.Parse(appsettings);
