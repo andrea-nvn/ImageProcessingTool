@@ -1,16 +1,52 @@
 ﻿using ImageProcessingTool;
 using ImageProcessingTool.ImageDisk;
+using ImageUtilities;
 using System.Drawing;
 using System.Text;
+using System.Text.Json;
 
 
 try
 {
-    var imageAnalyzer = new ImageDiskImageAnalyzer();
+    var imageAnalyzer = CreateImageAnalyzerFromSettings();
     var visionSystem = imageAnalyzer.CreateVisionSystem();
 
     var images = visionSystem.AcquireImages();
+    ShowAcquiredImages(images);
 
+    var imageIndex = GetImageToProcessIndexFromUser(images.Count);
+
+    var processedImage = ProcessSelectedImage(imageAnalyzer, images[imageIndex]);
+    Console.WriteLine($"\nLuminosità stimata: {processedImage.LuminositàStimata}");
+
+    FileService.WriteToCsv(processedImage);
+
+    SearchAnalisysResultsByBrightnessThreshold();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
+
+static ImageAnalyzer CreateImageAnalyzerFromSettings()
+{
+    var appsettings = File.ReadAllText("appsettings.json");
+
+    var doc = JsonDocument.Parse(appsettings);
+    var root = doc.RootElement;
+    var visionSistemType = root.GetProperty("VisionSistemType").GetString();
+
+    return visionSistemType switch
+    {
+        nameof(ImageDiskImageAnalyzer) => new ImageDiskImageAnalyzer(),
+        _ => throw new NotSupportedException("Dispositivo di visione non supportato!")
+    };
+}
+
+static void ShowAcquiredImages(
+    List<FileInfo> images)
+{
     var sb = new StringBuilder();
 
     for (int i = 0; i < images.Count; i++)
@@ -20,39 +56,44 @@ try
     }
 
     Console.WriteLine($"\n{sb}");
+}
+
+static int GetImageToProcessIndexFromUser(
+    int imagesCount)
+{
     Console.WriteLine("Seleziona l'immagine da analizzare: ");
 
     if (!int.TryParse(Console.ReadLine(), out int imageIndex))
     {
-        Console.WriteLine("\nIndice non valido!");
-        return;
+        throw new Exception("Indice non valido!");
     }
 
-    if (imageIndex > images.Count)
+    if (imageIndex > imagesCount)
     {
-        Console.WriteLine($"L'indice scelto deve essere minore di {images.Count}");
-        return;
+        throw new Exception($"L'indice scelto deve essere minore di {imagesCount}");
     }
 
-    var selectedImage = images[imageIndex];
-    var bitmap = new Bitmap(selectedImage.FullName);
+    return imageIndex;
+}
+
+static ProcessedImage ProcessSelectedImage(
+    ImageAnalyzer imageAnalyzer,
+    FileInfo image)
+{
+    var bitmap = new Bitmap(image.FullName);
     var extimatedBrightness = imageAnalyzer.CalculateImageBrightness(bitmap);
 
-    Console.WriteLine($"\nLuminosità stimata: {extimatedBrightness}");
+    return new ProcessedImage(image.Name, image.Length, extimatedBrightness, DateTimeOffset.Now);
+}
 
-    var processedImage = new ProcessedImage(selectedImage.Name, selectedImage.Length, extimatedBrightness, DateTimeOffset.Now);
-    FileService.WriteToCsv(processedImage);
-
+static void SearchAnalisysResultsByBrightnessThreshold()
+{
     Console.WriteLine($"\nInserire valore minimo di luminosità per la ricerca:");
+
     if (!double.TryParse(Console.ReadLine(), out double threshold))
     {
-        Console.WriteLine("\nValore non valido!");
-        return;
+        throw new Exception("Valore non valido!");
     }
 
     FileService.SearchFromCsv(threshold);
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
 }
