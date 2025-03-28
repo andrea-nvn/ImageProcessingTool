@@ -8,7 +8,7 @@ public static class FileService
 
 
     public static void WriteToCsv(
-        ImageAnalysisResults.AnalysisResults processedImage)
+        ImageAnalysisResults processedImage)
     {
         if (!Directory.Exists(Path))
         {
