@@ -1,5 +1,4 @@
-﻿using ImageProcessingTool;
-using ImageProcessingTool.AnalysisResults;
+﻿using ImageProcessingTool.AnalysisResults;
 using ImageProcessingTool.ImageDisk;
 using ImageUtilities;
 using System.Drawing;
@@ -77,14 +76,14 @@ static int GetImageToProcessIndexFromUser(
     return imageIndex;
 }
 
-static AnalysisResults AnalyzeSelectedImage(
+static ImageAnalysisResults AnalyzeSelectedImage(
     ImageAnalyzer imageAnalyzer,
     FileInfo image)
 {
     var bitmap = new Bitmap(image.FullName);
     var extimatedBrightness = imageAnalyzer.CalculateImageBrightness(bitmap);
 
-    return new AnalysisResults(image.Name, image.Length, extimatedBrightness, DateTimeOffset.Now);
+    return new ImageAnalysisResults(image.Name, image.Length, extimatedBrightness, DateTimeOffset.Now);
 }
 
 static void SearchAnalisysResultsByBrightnessThreshold()
