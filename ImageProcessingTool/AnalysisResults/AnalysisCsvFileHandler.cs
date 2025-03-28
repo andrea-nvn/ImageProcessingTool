@@ -3,7 +3,7 @@ using ImageUtilities.Interfaces;
 
 namespace ImageProcessingTool.AnalysisResults;
 
-public class AnalysisCsvFileHandler : IAnalysisFileHandler
+public sealed class AnalysisCsvFileHandler : IAnalysisFileHandler
 {
     private const string Path = "./results";
     private const string FileName = "AnalysisResults.csv";
