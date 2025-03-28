@@ -1,6 +1,6 @@
-﻿namespace ImageProcessingTool;
+﻿namespace ImageProcessingTool.AnalysisResults;
 
-public sealed record ProcessedImage(
+public sealed record AnalysisResults(
     string NomeFile,
     long Dimensione,
     double LuminositàStimata,

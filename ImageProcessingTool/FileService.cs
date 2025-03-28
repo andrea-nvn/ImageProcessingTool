@@ -1,4 +1,6 @@
-﻿namespace ImageProcessingTool;
+﻿using ImageProcessingTool.AnalysisResults;
+
+namespace ImageProcessingTool;
 
 public static class FileService
 {
@@ -8,7 +10,7 @@ public static class FileService
 
 
     public static void WriteToCsv(
-        ProcessedImage processedImage)
+        AnalysisResults.AnalysisResults processedImage)
     {
         if (!Directory.Exists(Path))
         {
